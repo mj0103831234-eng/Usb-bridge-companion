@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
+    defaults:
+      run:
+        working-directory: android-companion
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -22,7 +26,7 @@ jobs:
         distribution: 'zulu'
         cache: 'gradle'
     
-    - name: Setup Gradle 8.2
+    - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.2'
@@ -34,5 +38,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: usb-bridge-companion-debug
-        path: app/build/outputs/apk/debug/*.apk
+        path: android-companion/app/build/outputs/apk/debug/*.apk
         retention-days: 30
