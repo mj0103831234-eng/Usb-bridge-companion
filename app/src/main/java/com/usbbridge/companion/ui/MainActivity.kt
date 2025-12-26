@@ -4,7 +4,6 @@ import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var usbManager: UsbManager
     private lateinit var deviceAdapter: DeviceAdapter
-    private lateinit var statusIcon: ImageView
     private lateinit var statusText: TextView
     private lateinit var recyclerView: RecyclerView
 
@@ -30,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        statusIcon = findViewById(R.id.statusIcon)
         statusText = findViewById(R.id.statusText)
         recyclerView = findViewById(R.id.recyclerView)
     }
@@ -47,8 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        statusIcon.setImageResource(R.drawable.status_connected)
-        statusText.text = "USB Bridge Ready"
+        statusText.text = "USB Bridge Ready - ${deviceAdapter.itemCount} devices"
     }
 
     override fun onResume() {
