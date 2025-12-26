@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.usbbridge.companion.R
 
 class DeviceAdapter(private var devices: List<UsbDevice>) : RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder>() {
 
     class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val deviceName: TextView = itemView.findViewById(R.id.deviceName)
-        val deviceInfo: TextView = itemView.findViewById(R.id.deviceInfo)
+        val deviceName: TextView = itemView.findViewById(android.R.id.text1)
+        val deviceInfo: TextView = itemView.findViewById(android.R.id.text2)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
@@ -22,7 +21,7 @@ class DeviceAdapter(private var devices: List<UsbDevice>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val device = devices[position](holder.deviceName.text) = device.deviceName ?: "Unknown Device"
-        holder.deviceInfo.text = "ID: ${device.vendorId}:${device.productId}"
+        holder.deviceInfo.text = "Vendor: ${device.vendorId} Product: ${device.productId}"
     }
 
     override fun getItemCount(): Int = devices.size
