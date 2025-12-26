@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        // Pre-fill your Replit API URL
         binding.serverUrlInput.setText("https://api-connects-5--mj0103831234.replit.app")
         
         binding.connectButton.setOnClickListener {
