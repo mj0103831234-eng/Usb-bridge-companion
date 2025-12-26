@@ -12,17 +12,17 @@ class DeviceAdapter(private var devices: List<UsbDevice>) : RecyclerView.Adapter
 
     class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val deviceName: TextView = itemView.findViewById(R.id.deviceName)
-        val deviceId: TextView = itemView.findViewById(R.id.deviceId)
+        val deviceInfo: TextView = itemView.findViewById(R.id.deviceInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_device, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_2, parent, false)
         return DeviceViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val device = devices[position](holder.deviceName.text) = device.deviceName ?: "Unknown Device"
-        holder.deviceId.text = "ID: ${device.vendorId}:${device.productId}"
+        holder.deviceInfo.text = "ID: ${device.vendorId}:${device.productId}"
     }
 
     override fun getItemCount(): Int = devices.size
