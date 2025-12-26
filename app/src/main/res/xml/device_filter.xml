@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- This filter allows the app to detect ANY USB device -->
+    <usb-device class="255" subclass="255" protocol="255" />
+    
+    <!-- Common USB device classes that are most useful -->
+    <usb-device class="3" />   <!-- HID devices (keyboards, mice, etc.) -->
+    <usb-device class="7" />   <!-- Printer -->
+    <usb-device class="8" />   <!-- Mass storage (USB drives) -->
+    <usb-device class="9" />   <!-- Hub -->
+    <usb-device class="10" />  <!-- CDC devices (serial/modem) -->
+    <usb-device class="11" />  <!-- Smart Card -->
+    
+    <!-- Fallback - catch any device not covered above -->
     <usb-device />
 </resources>
