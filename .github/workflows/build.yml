@@ -24,10 +24,17 @@ jobs:
       with:
         gradle-version: '8.2'
 
-    - name: Fix corrupted resource file
+    - name: Clean ALL corrupted resource files
       run: |
-        rm -f app/src/main/res/drawable/ic_launcher.xml
+        find app/src/main/res/drawable -name "ic_launcher*" -type f -delete
+        find app/src/main/res/drawable -name "*FL*" -type f -delete
+        mkdir -p app/src/main/res/drawable
         echo '<?xml version="1.0" encoding="utf-8"?><shape xmlns:android="http://schemas.android.com/apk/res/android"><solid android:color="#3B82F6"/></shape>' > app/src/main/res/drawable/ic_launcher.xml
+
+    - name: Clean corrupted XML files
+      run: |
+        find app/src/main/res -name "*FL*" -type f -delete
+        find app/src/main/res -name "*.xml *" -type f -delete
 
     - name: Build Debug APK
       run: gradle assembleDebug --no-daemon
