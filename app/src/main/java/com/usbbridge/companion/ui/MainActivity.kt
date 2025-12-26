@@ -10,11 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.usbbridge.companion.R
-import com.usbbridge.companion.service.USBBridgeService
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var usbManager: USBManager
+    private lateinit var usbManager: UsbManager
     private lateinit var deviceAdapter: DeviceAdapter
     private lateinit var statusIcon: ImageView
     private lateinit var statusText: TextView
@@ -41,32 +40,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        deviceAdapter = DeviceAdapter(emptyList())
+        val devices = usbManager.deviceList.values.toList()
+        deviceAdapter = DeviceAdapter(devices)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = deviceAdapter
-        updateDeviceList()
     }
 
     private fun updateUI() {
-        val isConnected = USBBridgeService.isRunning()
-        
-        if (isConnected) {
-            statusIcon.setImageResource(R.drawable.status_connected)
-            statusText.text = "Connected"
-        } else {
-            statusIcon.setImageResource(R.drawable.status_disconnected)
-            statusText.text = "Disconnected"
-        }
-    }
-
-    private fun updateDeviceList() {
-        val devices = usbManager.deviceList.values.toList()
-        deviceAdapter.updateDevices(devices)
+        statusIcon.setImageResource(R.drawable.status_connected)
+        statusText.text = "USB Bridge Ready"
     }
 
     override fun onResume() {
         super.onResume()
         updateUI()
-        updateDeviceList()
+        setupRecyclerView()
     }
 }
