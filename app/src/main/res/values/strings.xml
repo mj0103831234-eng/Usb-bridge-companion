@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">USB Bridge</string>
     
     <!-- Main Activity Strings -->
-    <string name="server_url_hint">Enter server URL (e.g., http://192.168.1.100:8080)</string>
+    <string name="server_url_hint">Server URL (e.g., https://your-app.replit.app)</string>
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
-    <string name="status_connected">Connected</string>
     <string name="status_disconnected">Disconnected</string>
-    <string name="status_connecting">Connecting…</string>
+    <string name="status_connecting">Connecting...</string>
+    <string name="status_connected">Connected</string>
     
     <!-- Device List Strings -->
     <string name="no_devices">No USB devices connected</string>
@@ -17,10 +18,10 @@
     <string name="unknown_manufacturer">Unknown Manufacturer</string>
     
     <!-- Service Strings -->
+    <string name="notification_channel_name">USB Bridge Service</string>
+    <string name="notification_channel_description">Shows when USB Bridge is running</string>
     <string name="service_notification_title">USB Bridge Active</string>
     <string name="service_notification_text">Bridging USB devices to network</string>
-    <string name="service_notification_channel_name">USB Bridge Service</string>
-    <string name="service_notification_channel_desc">Shows when USB Bridge is running</string>
     
     <!-- Error Messages -->
     <string name="error_invalid_url">Please enter a valid server URL</string>
