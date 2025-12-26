@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Standard Android Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- USB Bridge App Colors -->
     <color name="primary">#3B82F6</color>
     <color name="primary_dark">#1E40AF</color>
+    <color name="primary_variant">#1E40AF</color>
     <color name="accent">#10B981</color>
+    <color name="secondary">#10B981</color>
+    <color name="secondary_variant">#059669</color>
     <color name="background">#0F172A</color>
     <color name="surface">#1E293B</color>
     <color name="text_primary">#F8FAFC</color>
     <color name="text_secondary">#94A3B8</color>
+    <color name="text_disabled">#64748B</color>
     <color name="success">#10B981</color>
     <color name="error">#EF4444</color>
     <color name="warning">#F59E0B</color>
+    
+    <!-- Material Design Required Colors -->
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#F8FAFC</color>
+    <color name="on_surface">#F8FAFC</color>
+    <color name="on_error">#FFFFFF</color>
 </resources>
