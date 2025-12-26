@@ -1,153 +1,72 @@
 package com.usbbridge.companion.ui
 
-import android.Manifest
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.content.pm.PackageManager
 import android.hardware.usb.UsbDevice
-import android.os.Build
+import android.hardware.usb.UsbManager
 import android.os.Bundle
-import android.os.IBinder
-import android.view.View
-import android.widget.Toast
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.usbbridge.companion.R
-import com.usbbridge.companion.databinding.ActivityMainBinding
-import com.usbbridge.companion.service.UsbBridgeService
+import com.usbbridge.companion.service.USBBridgeService
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private var bridgeService: UsbBridgeService? = null
-    private var isBound = false
+    private lateinit var usbManager: USBManager
     private lateinit var deviceAdapter: DeviceAdapter
-
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as UsbBridgeService.LocalBinder
-            bridgeService = binder.getService()
-            isBound = true
-            setupServiceCallbacks()
-            updateDeviceList()
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            bridgeService = null
-            isBound = false
-        }
-    }
+    private lateinit var statusIcon: ImageView
+    private lateinit var statusText: TextView
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        setupUI()
-        requestNotificationPermission()
-        startAndBindService()
+        initializeViews()
+        setupUSB()
+        setupRecyclerView()
+        updateUI()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (isBound) {
-            unbindService(serviceConnection)
-            isBound = false
-        }
+    private fun initializeViews() {
+        statusIcon = findViewById(R.id.statusIcon)
+        statusText = findViewById(R.id.statusText)
+        recyclerView = findViewById(R.id.recyclerView)
     }
 
-    private fun setupUI() {
-        binding.serverUrlInput.setText("https://api-connects-5--mj0103831234.replit.app")
-        
-        binding.connectButton.setOnClickListener {
-            val serverUrl = binding.serverUrlInput.text.toString().trim()
-            if (serverUrl.isNotEmpty()) {
-                bridgeService?.connect(serverUrl)
-                updateConnectionState(true, "Connecting...")
-            } else {
-                Toast.makeText(this, "Please enter server URL", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun setupUSB() {
+        usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
+    }
 
-        binding.disconnectButton.setOnClickListener {
-            bridgeService?.disconnect()
-        }
-
+    private fun setupRecyclerView() {
         deviceAdapter = DeviceAdapter(emptyList())
-        binding.devicesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = deviceAdapter
-        }
-
-        updateConnectionState(false, "Disconnected")
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = deviceAdapter
+        updateDeviceList()
     }
 
-    private fun setupServiceCallbacks() {
-        bridgeService?.apply {
-            onConnectionStateChanged = { connected ->
-                runOnUiThread {
-                    updateConnectionState(connected, if (connected) "Connected" else "Disconnected")
-                }
-            }
-
-            onDevicesChanged = { devices ->
-                runOnUiThread {
-                    updateDeviceList(devices)
-                }
-            }
-
-            onError = { error ->
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, error, Toast.LENGTH_LONG).show()
-                    updateConnectionState(false, "Error: $error")
-                }
-            }
-        }
-    }
-
-    private fun updateConnectionState(connected: Boolean, status: String) {
-        binding.apply {
-            statusText.text = status
-            statusIndicator.setImageResource(
-                if (connected) R.drawable.status_connected else R.drawable.status_disconnected
-            )
-            connectButton.isEnabled = !connected
-            disconnectButton.isEnabled = connected
-            serverUrlInput.isEnabled = !connected
-        }
-    }
-
-    private fun updateDeviceList(devices: List<UsbDevice> = emptyList()) {
-        val deviceList = if (isBound) {
-            bridgeService?.getConnectedDevices() ?: devices
-        } else devices
-
-        deviceAdapter.updateDevices(deviceList)
+    private fun updateUI() {
+        val isConnected = USBBridgeService.isRunning()
         
-        binding.noDevicesText.visibility = if (deviceList.isEmpty()) View.VISIBLE else View.GONE
-        binding.devicesRecyclerView.visibility = if (deviceList.isEmpty()) View.GONE else View.VISIBLE
-    }
-
-    private fun startAndBindService() {
-        val intent = Intent(this, UsbBridgeService::class.java)
-        startForegroundService(intent)
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
-    }
-
-    private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) 
-                != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                    1001
-                )
-            }
+        if (isConnected) {
+            statusIcon.setImageResource(R.drawable.status_connected)
+            statusText.text = "Connected"
+        } else {
+            statusIcon.setImageResource(R.drawable.status_disconnected)
+            statusText.text = "Disconnected"
         }
+    }
+
+    private fun updateDeviceList() {
+        val devices = usbManager.deviceList.values.toList()
+        deviceAdapter.updateDevices(devices)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUI()
+        updateDeviceList()
     }
 }
