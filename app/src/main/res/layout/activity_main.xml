@@ -3,108 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#0F172A">
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="USB Bridge"
-        android:textColor="#F8FAFC"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal" />
-
-    <LinearLayout
+        android:id="@+id/statusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#1E293B">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Server Connection"
-            android:textColor="#F8FAFC"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/serverUrlInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Enter server URL"
-            android:inputType="textUri"
-            android:textColor="#F8FAFC"
-            android:textColorHint="#94A3B8" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <View
-                android:id="@+id/statusIndicator"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="#EF4444" />
-
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:text="Disconnected"
-                android:textColor="#94A3B8" />
-
-            <Button
-                android:id="@+id/connectButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Connect" />
-
-            <Button
-                android:id="@+id/disconnectButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Disconnect"
-                android:enabled="false" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Connected USB Devices"
-        android:textColor="#F8FAFC"
+        android:text="USB Bridge Starting..."
         android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/noDevicesText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="No USB devices connected"
-        android:textColor="#94A3B8"
-        android:padding="32dp" />
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:background="@android:color/background_light"
+        android:layout_marginBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/devicesRecyclerView"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
